@@ -1,0 +1,114 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Pets!",
+        "version": "1.0"
+    },
+    "paths": {
+        "/pets": {
+            "patch": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "oneOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Dog"
+                                    },
+                                    {
+                                        "$ref": "#/components/schemas/Cat"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/a2"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Dog": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Pet"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "bark": {
+                                "type": "boolean"
+                            },
+                            "breed": {
+                                "enum": [
+                                    "Dingo",
+                                    "Husky",
+                                    "Retriever",
+                                    "Shepherd"
+                                ],
+                                "type": "string"
+                            }
+                        }
+                    }
+                ]
+            },
+            "Cat": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Pet"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "hunts": {
+                                "type": "boolean"
+                            },
+                            "age": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ]
+            },
+            "Pet": {
+                "discriminator": {
+                    "propertyName": "pet_type"
+                },
+                "required": [
+                    "pet_type"
+                ],
+                "type": "object",
+                "properties": {
+                    "pet_type": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "responses": {
+            "a2": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "oneOf": [
+                                {
+                                    "$ref": "#/components/schemas/Dog"
+                                },
+                                {
+                                    "$ref": "#/components/schemas/Cat"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "description": ""
+            }
+        }
+    }
+}
